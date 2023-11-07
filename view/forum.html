@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion Forum</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+
+  .container {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .post-content textarea, .comment-inputs textarea, .comment-inputs input {
+    width: calc(100% - 16px);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .post-content input[type="text"] {
+    width: calc(100% - 16px);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .button {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .button:hover {
+    background-color: #333;
+  }
+
+  .post-container, .comment {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .post-content, .comment-content {
+    margin-bottom: 10px;
+  }
+
+  .comments {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comment-inputs {
+    margin-bottom: 10px;
+  }
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align:center;">Discussion Forum</h1>
+
+    <div class="post-content">
+      <input type="text" id="postAuthor" placeholder="Your username" required>
+      <textarea id="postContent" placeholder="Write your post here"></textarea>
+      <button class="button" onclick="submitPost()">Submit Post</button>
+    </div>
+
+    <div id="posts">
+      <!-- Posts will be displayed here -->
+    </div>
+
+  </div>
+
+  <script>
+    function submitPost() {
+      const author = document.getElementById('postAuthor').value;
+      const postContent = document.getElementById('postContent').value;
+
+      if (postContent.trim() !== '') {
+        const post = {
+          id: Date.now(),
+          author: author,
+          content: postContent,
+          comments: []
+        };
+
+        let posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push(post);
+
+        localStorage.setItem('posts', JSON.stringify(posts));
+
+        document.getElementById('postContent').value = '';
+        displayPosts();
+      }
+    }
+
+    function displayPosts() {
+      const postsContainer = document.getElementById('posts');
+      postsContainer.innerHTML = '';
+
+      let posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+      posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post-container');
+        postElement.style.border = '1px solid #ccc';
+        postElement.style.borderRadius = '10px';
+        postElement.style.padding = '20px';
+        postElement.style.marginBottom = '20px';
+        postElement.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+
+        const postContent = document.createElement('div');
+        postContent.classList.add('post-content');
+        postContent.innerHTML = `
+          <h2>Post by ${post.author}</h2>
+          <p>${post.content}</p>
+        `;
+
+        const commentsList = document.createElement('ul');
+        commentsList.classList.add('comments');
+        commentsList.id = `comments-${post.id}`;
+
+        const commentInputs = document.createElement('div');
+        commentInputs.classList.add('comment-inputs');
+        commentInputs.innerHTML = `
+          <input type="text" id="commentAuthor-${post.id}" placeholder="Your username">
+          <textarea id="commentContent-${post.id}" placeholder="Your comment"></textarea>
+          <button class="button" onclick="submitComment(${post.id})">Submit Comment</button>
+        `;
+
+        post.comments.forEach(comment => {
+          const commentElement = document.createElement('li');
+          commentElement.classList.add('comment');
+          commentElement.style.border = '1px solid #ccc';
+          commentElement.style.borderRadius = '10px';
+          commentElement.style.padding = '10px';
+          commentElement.style.marginBottom = '10px';
+          commentElement.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+          commentElement.innerHTML = `
+            <div class="comment-content">
+              <h3>Comment by ${comment.author}</h3>
+              <p>${comment.content}</p>
+            </div>
+          `;
+          commentsList.appendChild(commentElement);
+        });
+
+        postElement.appendChild(postContent);
+        postElement.appendChild(commentsList);
+        postElement.appendChild(commentInputs);
+        postsContainer.appendChild(postElement);
+      });
+    }
+
+    function submitComment(postId) {
+      const commentAuthor = document.getElementById(`commentAuthor-${postId}`).value;
+      const commentContent = document.getElementById(`commentContent-${postId}`).value;
+
+      if (commentAuthor.trim() !== '' && commentContent.trim() !== '') {
+        let posts = JSON.parse(localStorage.getItem('posts')) || [];
+        const post = posts.find(p => p.id === postId);
+
+        if (post) {
+          const comment = {
+            author: commentAuthor,
+            content: commentContent
+          };
+
+          post.comments.push(comment);
+          localStorage.setItem('posts', JSON.stringify(posts));
+          displayPosts();
+        }
+      }
+    }
+
+    displayPosts();
+  </script>
+</body>
+</html>
