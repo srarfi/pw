@@ -1,6 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "projet_web";
+ $conn = mysqli_connect($servername, $username, $password, "projet_web");
+ if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
+$query = "SELECT user, post FROM post ORDER BY id DESC";
+$result = mysqli_query($conn, $query);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   
+
+    // Check if the 'user' and 'post' keys are set in the $_POST array
+    if (isset($_POST['user'], $_POST['post'])) {
+        $userv = $_POST['user'];
+        $postv = $_POST['post'];
+        $stmt = $conn->prepare("INSERT INTO post (user, post) VALUES (?, ?)");
+        $stmt->bind_param("ss", $userv, $postv);
+        $stmt->execute();
+
+        // Close the statement and connection
+        $stmt->close();
+        $conn->close();
+    }
+}
+
+if ($result) {
+    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    die("Error retrieving posts");
+}
+
+
+?>
+
+
+
+
+<html lang="en">
 <head>
     <title>Zay Shop - Product Detail Page</title>
     <meta charset="utf-8">
@@ -13,28 +52,21 @@
     <link rel="stylesheet" href="assets/css/templatemo.css">
     <link rel="stylesheet" href="assets/css/custom.css">
 
-    <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
 
-    <!-- Slick -->
     <link rel="stylesheet" type="text/css" href="assets/css/slick.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
     <link rel="stylesheet" href="forum.css">
     <script type="text/javascript" src="forum.js"></script>
 </head>
 <body>
-    <!-- Start Top Nav -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
         <div class="container text-light">
             <div class="w-100 d-flex justify-content-between">
             </div>
         </div>
     </nav>
-    <!-- Close Top Nav -->
-
-
-    <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light shadow">
         <div class="container d-flex justify-content-between align-items-center">
 
@@ -68,19 +100,29 @@
     <div class="container">
         <h1 style="text-align:center;">Discussion Forum</h1>
     
-        <div class="post-content">
-          <input type="text" id="postAuthor" placeholder="Your username" required>
-          <textarea id="postContent" placeholder="Write your post here"></textarea>
-          <button class="button" onclick="submitPost()">Submit Post</button>
-        </div>
+        <form action="" method="POST" class="post-content">
+          <input type="text" id="postAuthor" name="user" placeholder="Your username" required>
+          <textarea id="postContent" name="post" placeholder="Write your post here"></textarea>
+          <button type="submit" class="button" >Submit Post</button>
+        </form>
     
         <div id="posts">
-          <!-- Posts will be displayed here -->
-        </div>
+        <?php
+        // Display the posts
+        if (isset($posts) && is_array($posts)) {
+            foreach ($posts as $post) {
+                echo '<div class="post">';
+                echo '<p><strong>User:</strong> ' . htmlspecialchars($post['user']) . '</p>';
+                echo '<p><strong>Post:</strong> ' . htmlspecialchars($post['post']) . '</p>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p>No posts available.</p>';
+        }
+        ?>
+    </div>
     
       </div>
-<!--
-     <!-- Start Footer -->
      <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
             <div class="row">
@@ -181,8 +223,3 @@
 
 </html>
     
-
-
-
-
--->
