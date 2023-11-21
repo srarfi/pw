@@ -1,11 +1,19 @@
-o<?php 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+
+
+<?php 
 include "../control/coachingc.php";
 include "../model/coaching.php";
 $c = new coachingc();
 $tab = $c->list_coaching();
-
-
-
 
 foreach ($tab as $ut) {
     echo "
@@ -33,3 +41,28 @@ foreach ($tab as $ut) {
 }
 
 ?>
+
+<body>
+
+<div class="sidebar" id="sidebar" onmouseover="expandSidebar()" onmouseout="collapseSidebar()">
+    <div class="logo">
+        <img src="log.png" alt="Logo" height="96" width="126">
+    </div>
+    <div class="links">
+        <a href="#">admin gestion_client</a>
+        <a href="#">admin gestion_commande</a>
+        <a href="#">admin gestion_forum</a>
+        <a href="#">admin gestion_</a>
+        <a href="#">admin gestion_</a>
+    </div>
+</div>
+
+<div class="content">
+  
+</div>
+
+<footer class="footer">
+    <!-- Content for the footer goes here -->
+</footer>
+</body>
+</html>

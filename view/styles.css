@@ -1,7 +1,6 @@
 ﻿body {
-    display: flex;
     margin: 0;
-    padding: 0;
+    font-family: 'Arial', sans-serif;
 }
 
 .sidebar {
@@ -39,22 +38,22 @@
 }
 
 .content {
-    flex: 1;
-    margin-left: 130px; /* Adjust this margin based on your sidebar width */
+    margin-left: 130px; /* Adjust this margin based on the collapsed width */
     padding: 20px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.post-content {
+.admin {
+    width: 50%;
+    margin: 20px auto; /* Adjust margin-top to match the padding of the .content */
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
     margin-bottom: 20px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .footer {
     height: 10px;
     background: linear-gradient(to bottom, rgb(26, 10, 75), rgb(26, 10, 75));
 }
-
