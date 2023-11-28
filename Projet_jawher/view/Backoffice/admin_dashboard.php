@@ -1,21 +1,27 @@
+
 <?php
-require_once '../../config.php';
-require_once 'C:\xampp\htdocs\Projet_jawher\controller\postC.php';
-include_once '../../model/post.php';
+require_once '../config.php';
+require_once '../controller/PostController.php';
 
-
-
+$pdo =config::getConnexion();
+$PostController = new PostController($pdo);
 ?>
 
+
+
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="forum.css">
     <script src="forum.js" ></script>
+
 </head>
 <body>
 
@@ -35,40 +41,22 @@ include_once '../../model/post.php';
 <div class="content">
     <div class="container">
         <h1 style="text-align:center;">Admin Panel</h1>
-        
-
-        <!-- Display posts here -->
-        <div id="posts">
-        <table border="2px">
-        <thead>
-            <tr>
-                <th> User </th>
-                <th> Post </th>
-                <th> Replies </th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            foreach ($posts as $post) {
-                echo '<tr>';
-                echo '<td><strong>User:</strong> ' . htmlspecialchars($post['user']).'</td>';
-                echo '<td><strong>Post:</strong> ' . htmlspecialchars($post['post']).'</td>';
-                echo '<td>';
-                $replies=$postModel->showReply($post["id"]);
-                foreach($replies as $comment){
-                    echo '<b>Reply</b>: '.$comment["mess"].'|';
-                }
-                echo '</td>';
-                echo '</tr>';
-            }
-            ?>
-        </tbody>
-    </table>        </div>
-
-        <div id="users">
-            <!-- User list will be displayed here -->
+    <form action="" method="POST">
+        <div class="post-content">
+          <input type="text" id="postAuthor" placeholder="Your username" name="user" >
+          <input id="postContent" placeholder="Write your post here" name="post"></input>
+          <button class="button" type="submit" onclick="submitPost()">Submit Post</button>
         </div>
-    </div>
+    </form>
+        <div id="posts">
+          <!-- Posts will be displayed here -->
+        </div>
+    
+        <div id="users">
+          <!-- User list will be displayed here -->
+        </div>
+    
+      </div>
 </div>
 
 <footer class="footer">
