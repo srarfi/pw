@@ -4,6 +4,8 @@ include "../model/produit.php";
 include "../controller/produitC.php"; 
 $c = new ProductController();
 $productList = $c->listProducts(); 
+$salesController = new SalesController();
+$bestAndLeastSellers = $salesController->getBestAndLeastSellers();
 
 
 ?>
@@ -11,7 +13,7 @@ $productList = $c->listProducts();
 <html lang="en">
 
 <head>
-    <title>Zay Shop - Product Detail Page</title>
+    <title> Shop - Product  Page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -203,6 +205,26 @@ antioxydants et soutien au metabolisme</p>
         <?php
 
 if ($productList) {
+    echo '<table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Product Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Best Seller</td>
+                <td>' . $bestAndLeastSellers['best_seller']['nom'] . '</td>
+            </tr>
+            <tr>
+                <td>Least Seller</td>
+                <td>' . $bestAndLeastSellers['least_seller']['nom'] . '</td>
+            </tr>
+        </tbody>
+    </table>';
+
+    
     echo "<section class='container my-5'>
             <div class='row g-4'>";
     

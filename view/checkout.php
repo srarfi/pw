@@ -1,6 +1,7 @@
 <?php 
 
 include "../model/commande.php";
+include "../model/produit.php";
 include "../controller/produitC.php";
 ?>
 
@@ -22,6 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     $commande = new Commande(null, null, $productId, $productName);
 
     $commandeController->addCommande($commande);
+    $salesController = new SalesController();
+    $salesController->updateSalesCount($productId);
 } else {
     // Redirect to the product page if no product information is provided
     header("Location: product.php");
@@ -52,13 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     <!-- Slick -->
     <link rel="stylesheet" type="text/css" href="assets/css/slick.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
-<!--
-    
 
 
 
 
--->
+
+
 	<style type="text/css">
 	.auto-style1 {
 		color: #DCDDE1;

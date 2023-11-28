@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include "../model/produit.php";
 include "../controller/produitC.php";
 
@@ -35,15 +35,15 @@ if (isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['pro
         echo 'All fields are required!';
     }
 }
-if (isset($_POST['delete_commande_id'])) {
-    $deleteCommandeId = $_POST['delete_commande_id'];
+    if (isset($_POST['delete_commande_id'])) {
+        $deleteCommandeId = $_POST['delete_commande_id'];
 
-    try {
-        $commandeController->deleteCommande($deleteCommandeId);
-        echo 'Commande deleted successfully!';
-    } catch (Exception $e) {
-        echo 'Error deleting commande: ' . $e->getMessage();
-    }}
+        try {
+            $commandeController->deleteCommande($deleteCommandeId);
+            echo 'Commande deleted successfully!';
+        } catch (Exception $e) {
+            echo 'Error deleting commande: ' . $e->getMessage();
+        }}
     if (isset($_POST['update_product'])) {
         $updateProductId = $_POST['update_product_id'];
         $updateProductName = $_POST['update_product_name'];
@@ -167,10 +167,24 @@ if (isset($_POST['delete_commande_id'])) {
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <title>Admin Page</title>
     <link rel="stylesheet" type="text/css" href="staile.css">
 </head>
 <body>
+<div class="sidebar" id="sidebar" onmouseover="expandSidebar()" onmouseout="collapseSidebar()">
+    <div class="logo">
+        <img src="aa.png" alt="Logo" height="96" width="126">
+    </div>
+    <div class="links">
+        <a href="#">admin gestion_client</a>
+        <a href="#">admin gestion_commande</a>
+        <a href="#">admin gestion_forum</a>
+        <a href="#">admin gestion_</a>
+        <a href="#">admin gestion_</a>
+    </div>
+</div>
     
 <table class="product-table">
         <thead>
@@ -214,7 +228,7 @@ if (isset($_POST['delete_commande_id'])) {
         </div>
         <div class="update-product">
         <h1>Update Product</h1>
-        <form action="" method="post "onsubmit="return validateUpdateProductForm();">
+        <form action="" method="post" onsubmit="return validateUpdateProductForm();">
             <label for="update_product_id">Product ID to Update:</label>
             <input type="text" id="update_product_id" name="update_product_id" ><br><br>
 
@@ -254,12 +268,12 @@ if (isset($_POST['delete_commande_id'])) {
 
         
             $commandes = $commandeController->listCommandes();
-
+          
             foreach ($commandes as $commande) {
                 echo "<li>Command ID: " . $commande['id_commande'] . "</li>";
-                echo "<li>User ID: " . $commande['id_ut'] . "</li>";
+                echo "<li>User ID: " . ($commande['id_ut'] ?? 'N/A') . "</li>";
                 echo "<li>Product ID: " . $commande['id_prod'] . "</li>";
-                echo "<li>Product name: " . $commande['product_nom'] . "</li>";
+                echo "<li>Product name: " . ($commande['nom'] ?? 'N/A') . "</li>";
                 echo "<hr>"; 
             }
             ?>
@@ -287,7 +301,26 @@ if (isset($_POST['delete_commande_id'])) {
         <input type="submit" name="update_commande" value="Update Commande">
     </form>
 </div>
+<footer class="footer">
+    <!-- Content for the footer goes here -->
+</footer>
 
+<script>
+    function expandSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.width = '250px';
+    }
+
+    function collapseSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.width = '130px'; // Adjust this width as needed
+    }
+
+    function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.width = sidebar.style.width === '250px' ? '50px' : '250px';
+    }
+</script>
 
     
 </body>
