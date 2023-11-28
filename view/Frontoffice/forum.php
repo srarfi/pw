@@ -1,53 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "projet_web";
-
-// Create a PDO connection
-try {
-    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
-
-// Handle Post Submission, Edit, and Delete
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['user'], $_POST['post'])) {
-        $userv = $_POST['user'];
-        $postv = $_POST['post'];
-
-        // Insert new post
-        $stmt = $pdo->prepare("INSERT INTO post (user, post) VALUES (?, ?)");
-        $stmt->execute([$userv, $postv]);
-    } elseif (isset($_POST['edit_post'], $_POST['edit_text'])) {
-        // Edit existing post
-        $postId = $_POST['edit_post'];
-        $editText = $_POST['edit_text'];
-
-        $stmt = $pdo->prepare("UPDATE post SET post = ? WHERE id = ?");
-        $stmt->execute([$editText, $postId]);
-    } elseif (isset($_POST['delete_post'])) {
-        // Delete existing post
-        $postIdToDelete = $_POST['delete_post'];
-
-        $stmt = $pdo->prepare("DELETE FROM post WHERE id = ?");
-        $stmt->execute([$postIdToDelete]);
-    }
-}
-
-// Fetch Posts
-$query = "SELECT id, user, post FROM post ORDER BY id DESC";
-$result = $pdo->query($query);
-
-if ($result) {
-    $posts = $result->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    die("Error retrieving posts");
-}
+include "../../controller/postC.php"
 ?>
-
 <html lang="en">
 <head>
     <title>Zay Shop - Product Detail Page</title>
@@ -193,17 +146,17 @@ if ($result) {
     <div class="container">
         <h1 style="text-align:center;">Discussion Forum</h1>
         
-        <form action="" method="POST" class="post-content" onsubmit="return validateForm()">
-        <input type="text" id="postAuthor" name="user" placeholder="Your username" required>
+        <form action="" method="POST" class="post-content" onsubmit="return validateForm() ;">
+        <input type="text" id="postAuthor" name="user" placeholder="Your username">
         <span class="error-message" id="usernameError"></span>
 
-        <textarea id="postContent" name="post" placeholder="Write your post here" required></textarea>
+        <textarea id="postContent" name="post" placeholder="Write your post here" ></textarea>
         <span class="error-message" id="postContentError"></span>
 
-        <button type="submit" class="button">Submit Post</button>
+        <button type="submit" class="button" style="margin: 20px;">Submit Post</button>
     </form>
 <div id="editContainer" style="display: none;">
-    <input type="text" id="editInput" name="editedPost" placeholder="Edit your post" required>
+    <input type="text" id="editInput" name="editedPost" placeholder="Edit your post">
     <span class="error-message" id="editError"></span>
     <button type="submit" id="editButton" class="button">Confirm Edit</button>
 </div>
@@ -212,6 +165,7 @@ if ($result) {
 <div id="posts">
         <?php
         // Display the posts
+        $i=0;
         if (isset($posts) && is_array($posts)) {
             foreach ($posts as $post) {
                 echo '<div class="post">';
@@ -226,14 +180,33 @@ if ($result) {
                 echo '<form action="" method="post" class="delete-form">';
                 echo '<input type="hidden" name="delete_post" value="' . $post['id'] . '">';
                 echo '<button type="submit" class="delete-button">Delete</button>';
+                echo '</form><br>';
+                // Add the Reply button
+                echo'<form method="POST">';
+                $replies=$postModel->showReply($post["id"]);
+                foreach($replies as $comment){
+                    echo 'username: '.$comment["username"].'<br>';
+                    echo '<input type="hidden" name="id_comment" value="'.$comment["id_commentaire"].'">';
+                    echo 'comment: '.$comment["mess"].'<input type="text" name="edit_reply" placeholder="Edit reply text"><button type="submit" class="edit-button">Edit</button><button class="delete-button"><a href="delete.php?id='.$comment["id_commentaire"].'" style="text-decoration: none;color: white;">Remove</a></button><br><hr>';
+                }
+                echo'</form>';
+                echo '<form action="" method="post" class="reply-form">';
+                echo '<input type="hidden" name="reply_post" value="' . $post['id'] . '">';
+                echo '<input type="submit" class="edit-button" value="Reply">';
+                echo 'Comment: <input type="text" name="reply">';
+                echo 'Username: <input type="text" name="username">';
+                echo '<br> Id: <input type="text" name="userid">';
                 echo '</form>';
                 echo '</div>';
+                $i=$i+1;
             }
         } else {
             echo '<p>No posts available.</p>';
         }
         ?>
-</div>
+    </div>
+    <!-- ... (Your existing HTML code) ... -->
+
     
       </div>
      <footer class="bg-dark" id="tempaltemo_footer">
@@ -333,19 +306,36 @@ if ($result) {
         postContentError.textContent = '';
 
         // Check if username is empty
-        if (authorInput.value.trim() === '') {
+        if (authorInput.value.trim() === "" || postContentInput.value.trim() === "") {
+            if (authorInput.value.trim() === "" ) {
             usernameError.textContent = 'Username is required.';
-            return false;
-        }
-
-        // Check if post content is empty
-        if (postContentInput.value.trim() === '') {
+                }
+            if (postContentInput.value.trim() === "") {
             postContentError.textContent = 'Post content cannot be empty.';
-            return false;
         }
+        return false;
+        }
+        const filteredPostContent = filterBadWords(postContentInput.value.trim());
+
+            // Update the post content
+            postContentInput.value = filteredPostContent;
 
         return true;
     }
+    
+    function filterBadWords(content) {
+            // List of bad words to filter
+            const badWords = ['bad word', 'another bad word', 'yet another bad word'];
+
+            // Replace bad words with stars
+            badWords.forEach(badWord => {
+                const regex = new RegExp("\\b" + badWord + "\\b", "gi");
+                content = content.replace(regex, '*'.repeat(badWord.length));
+            });
+
+            return content;
+    }
+    
 
     function showEditForm(postId, currentContent) {
         const editContainer = document.getElementById('editContainer');
