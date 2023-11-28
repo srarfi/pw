@@ -1,4 +1,43 @@
-﻿
+<?php
+
+include '../../Controller/ReclamController.php';
+include '../../model/Reclamation.php';
+
+$error = "";
+
+// Créer un événement
+$reclam = null; 
+
+// Créer une instance du contrôleur
+$reclamController = new ReclamController();
+
+if (
+    isset($_POST["date"]) &&
+    isset($_POST["objet"]) &&
+    isset($_POST["description"])
+) {
+    if (
+        !empty($_POST['date']) &&
+        !empty($_POST["objet"]) &&
+        !empty($_POST["description"])
+    ) {
+        $reclam = new Reclamation(
+            null,
+            $_POST['date'],
+            $_POST['objet'],
+            $_POST['description']
+        );
+        $reclamController->addReclam($reclam);
+        header('Location: http://localhost/gestionreclamation/view/Backoffice/reclamations.php');
+        exit(); // Make sure to exit after redirect
+    } else {
+        $error = "Toutes les informations doivent être renseignées.";
+    }
+}
+
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,25 +59,50 @@
     <!-- Slick -->
     <link rel="stylesheet" type="text/css" href="assets/css/slick.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/coachingcss.css">
-<!--
+    <link rel="stylesheet" href="forum.css">
+
+    <script>
+   function validateForm() {
+    var objet = document.getElementById("objet").value;
+    var description = document.getElementById("description").value;
+
+    var erreurObjet = document.getElementById("erreurObjet");
+    var erreurDescription = document.getElementById("erreurDescription");
+
+    // Réinitialiser les messages d'erreur
+    erreurObjet.innerHTML = "";
+    erreurDescription.innerHTML = "";
+
+    var isValid = true;
+
+    // Valider le champ de type
+    if (!/^[a-zA-Z]+$/.test(objet)) {
+        erreurObjet.innerHTML = "Le champ Objet de don doit contenir uniquement des lettres.";
+    isValid = false;
+}
+if (!/^[a-zA-Z]+$/.test(description) || /\s/.test(description)) {
+    erreurDescription.innerHTML = "Le champ Description de don doit contenir uniquement des lettres.";
+    isValid = false;
+}
+
+    // Valider le champ de montant
     
 
+    // Désactiver le bouton si la validation échoue pour le champ de type
+    document.getElementById("submitBtn").disabled = !isValid;
+
+    return isValid;
+}
 
 
-
--->
-	<style type="text/css">
-	.auto-style1 {
-		color: #DCDDE1;
-		text-decoration: underline;
-	}
-	.auto-style2 {
-		color: #DCDDE1;
-	}
-	</style>
+    // Attacher la fonction de validation au formulaire
+    document.getElementById("myForm").addEventListener("submit", function (event) {
+        if (!validateForm()) {
+            event.preventDefault(); // Empêcher la soumission du formulaire si la validation échoue
+        }
+    });
+</script>
 </head>
-
 <body>
     <!-- Start Top Nav -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
@@ -81,164 +145,47 @@
                 
         </div>
     </nav>
-    <!-- Close Header -->
+    <div class="container">
+        <h1 style="text-align:center;">ajouter reclamation</h1>
     
-    <script src="coachingscript.js"></script>
-    <style>
-        .Contenu {
-    width: 50%;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f5f5f5;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        <form class="text-left clearfix" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="myForm">
+            <div class="form-group">
+            
+                    <input class="form-control"  placeholder="Date de Reclam" type="date" id="date" name="date" />
+                    <span id="erreurDate" style="color: red"></span>
+             
+            </div>           
+             <div class="form-group">
+              <input class="form-control " placeholder="Objet" type="text" id="objet" name="objet"   oninput="validateForm()" />
+                <span id="erreurObjet" style="color: red"></span>
+            </div> 
+            <div class="form-group">
+              <input class="form-control"  placeholder="Description" type="texte" id="description" name="description"   oninput="validateForm()" />
+                    <span id="erreurDescription" style="color: red"></span>
+            </div>
+            <div class="text-center">
+              <input type="submit" class="btn btn-main text-center" value="Enregistrer" id="submitBtn">
 
-h1 {
-    color: #333;
-}
+            </div><br>
+            <div class="text-center">
+              <input type="reset" class="btn btn-main text-center" value="Réinitialiser">
 
-h2 {
-    color: #555;
-}
-
-label {
-    display: inline-block;
-    margin-bottom: 8px;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-    margin-right: 5px;
-}
-
-input[type="submit"] {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/* Optional: Add responsive styles for smaller screens */
-@media (max-width: 768px) {
-    .Contenu {
-        width: 80%;
-    }
-}
-
-    </style>
-<body>
-    <div class="Contenu">
-        <h1>Formulaire de Coaching</h1>
-        <form id="" action="submit_coaching_form.html" onsubmit="return validateForm()">
-        <h2>ID:</h2>
-            <label for="id">
-                <input type="input" id="id" name="id" value=""> 
-            </label><br>
-            <h2>Choisissez l'Objectif :</h2>
-            <label for="perte_poids">
-                <input type="checkbox" id="perte_poids" name="objectif" value="perte_poids"> Perte de Poids
-            </label><br>
-            <label for="prise_muscle">
-                <input type="checkbox" id="prise_muscle" name="objectif" value="prise_muscle"> Prise de Muscle
-            </label><br>
-            <label for="forme_generale">
-                <input type="checkbox" id="forme_generale" name="objectif" value="forme_generale"> Forme Générale
-            </label><br>
-            <label for="endurance">
-                <input type="checkbox" id="endurance" name="objectif" value="endurance"> Endurance
-            </label><br>
-            <label for="flexibilite">
-                <input type="checkbox" id="flexibilite" name="objectif" value="flexibilite"> Flexibilité
-            </label><br>
-
-            <h2>Nombre de Jours Disponibles :</h2>
-            <label for="jours_1">
-                <input type="radio" id="jours_1" name="jours" value="1"> 1 Jour
-            </label><br>
-            <label for="jours_2">
-                <input type="radio" id="jours_2" name="jours" value="2"> 2 Jours
-            </label><br>
-            <label for="jours_3">
-                <input type="radio" id="jours_3" name="jours" value="3"> 3 Jours
-            </label><br>
-            <label for="jours_4">
-                <input type="radio" id="jours_4" name="jours" value="4"> 4 Jours
-            </label><br>
-            <label for="jours_5">
-                <input type="radio" id="jours_5" name="jours" value="5"> 5 Jours
-            </label><br>
-
-            <h2>Heures par Jour :</h2>
-            <label for="heures_1">
-                <input type="radio" id="heures_1" name="heures" value="1"> 1 Heure
-            </label><br>
-            <label for="heures_2">
-                <input type="radio" id="heures_2" name="heures" value="2"> 2 Heures
-            </label><br>
-            <label for="heures_3">
-                <input type="radio" id="heures_3" name="heures" value="3"> 3 Heures
-            </label><br>
-            <label for="heures_4">
-                <input type="radio" id="heures_4" name="heures" value="4"> 4 Heures
-            </label><br>
-            <label for="heures_5">
-                <input type="radio" id="heures_5" name="heures" value="5"> 5 Heures
-            </label><br>
-
-            <input type="submit" value="Envoi">
-        </form>
-    </div>
-
+            </div>
+          </form>
     
+        <div id="posts">
+          <!-- Posts will be displayed here -->
+        </div>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-       <!-- Start Footer -->
-    <footer class="bg-dark" id="tempaltemo_footer">
+      </div>
+<!--
+     <!-- Start Footer -->
+     <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
             <div class="row">
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">
-					<span lang="en-gb">GymBros</span></h2>
+                    
                     <ul class="list-unstyled text-light footer-link-list">
                         <li>
                             <i class="fas fa-map-marker-alt fa-fw"></i>
@@ -328,40 +275,12 @@ input[type="submit"]:hover {
     <!-- End Script -->
 
     <!-- Start Slider Script -->
-    <script src="assets/js/slick.min.js"></script>
-    <script>
-        $('#carousel-related-product').slick({
-            infinite: true,
-            arrows: false,
-            slidesToShow: 4,
-            slidesToScroll: 3,
-            dots: true,
-            responsive: [{
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3
-                    }
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 3
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 3
-                    }
-                }
-            ]
-        });
-    </script>
-    <!-- End Slider Script -->
-
+   
 </body>
 
 </html>
+    
+
+
+
+

@@ -1,8 +1,40 @@
-﻿
+<?php 
+
+include "../model/commande.php";
+include "../controller/produitC.php";
+?>
+
+<!DOCTYPE html>
 <html lang="en">
+<?php
+// Initialize variables
+$productId = $productName = $productPrice = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset($_POST['product-name']) && isset($_POST['product-price'])) {
+    $productId = $_POST['product-id'];
+    $productName = $_POST['product-name'];
+    $productPrice = $_POST['product-price'];
+
+   
+    $commandeController = new CommandeController();
+
+   
+    $commande = new Commande(null, null, $productId, $productName);
+
+    $commandeController->addCommande($commande);
+} else {
+    // Redirect to the product page if no product information is provided
+    header("Location: product.php");
+    exit();
+    
+}
+
+
+
+?>
 
 <head>
-    <title>Zay Shop - Product Detail Page</title>
+    <title>Checkout</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,7 +44,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/templatemo.css">
     <link rel="stylesheet" href="assets/css/custom.css">
-
+    <link rel="stylesheet" href="styles/Checkoutcss">
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
@@ -20,7 +52,6 @@
     <!-- Slick -->
     <link rel="stylesheet" type="text/css" href="assets/css/slick.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/coachingcss.css">
 <!--
     
 
@@ -37,6 +68,7 @@
 		color: #DCDDE1;
 	}
 	</style>
+    
 </head>
 
 <body>
@@ -82,157 +114,25 @@
         </div>
     </nav>
     <!-- Close Header -->
-    
-    <script src="coachingscript.js"></script>
-    <style>
-        .Contenu {
-    width: 50%;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f5f5f5;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    <div class="checkout-container">
+        <h1>Checkout</h1>
+        <form method="POST">
 
-h1 {
-    color: #333;
-}
+            <label for="product-name">Product Name</label>
+            <input type="text" id="product-name" name="product-name" value="<?php echo $productName; ?>" readonly>
 
-h2 {
-    color: #555;
-}
+    <br>
+    <br>
+            <label for="total-price">Total Price</label>
+            <input type="text" id="total-price" name="total-price" value="<?php echo $productPrice; ?>" required readonly>
 
-label {
-    display: inline-block;
-    margin-bottom: 8px;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-    margin-right: 5px;
-}
-
-input[type="submit"] {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/* Optional: Add responsive styles for smaller screens */
-@media (max-width: 768px) {
-    .Contenu {
-        width: 80%;
-    }
-}
-
-    </style>
-<body>
-    <div class="Contenu">
-        <h1>Formulaire de Coaching</h1>
-        <form id="" action="submit_coaching_form.html" onsubmit="return validateForm()">
-        <h2>ID:</h2>
-            <label for="id">
-                <input type="input" id="id" name="id" value=""> 
-            </label><br>
-            <h2>Choisissez l'Objectif :</h2>
-            <label for="perte_poids">
-                <input type="checkbox" id="perte_poids" name="objectif" value="perte_poids"> Perte de Poids
-            </label><br>
-            <label for="prise_muscle">
-                <input type="checkbox" id="prise_muscle" name="objectif" value="prise_muscle"> Prise de Muscle
-            </label><br>
-            <label for="forme_generale">
-                <input type="checkbox" id="forme_generale" name="objectif" value="forme_generale"> Forme Générale
-            </label><br>
-            <label for="endurance">
-                <input type="checkbox" id="endurance" name="objectif" value="endurance"> Endurance
-            </label><br>
-            <label for="flexibilite">
-                <input type="checkbox" id="flexibilite" name="objectif" value="flexibilite"> Flexibilité
-            </label><br>
-
-            <h2>Nombre de Jours Disponibles :</h2>
-            <label for="jours_1">
-                <input type="radio" id="jours_1" name="jours" value="1"> 1 Jour
-            </label><br>
-            <label for="jours_2">
-                <input type="radio" id="jours_2" name="jours" value="2"> 2 Jours
-            </label><br>
-            <label for="jours_3">
-                <input type="radio" id="jours_3" name="jours" value="3"> 3 Jours
-            </label><br>
-            <label for="jours_4">
-                <input type="radio" id="jours_4" name="jours" value="4"> 4 Jours
-            </label><br>
-            <label for="jours_5">
-                <input type="radio" id="jours_5" name="jours" value="5"> 5 Jours
-            </label><br>
-
-            <h2>Heures par Jour :</h2>
-            <label for="heures_1">
-                <input type="radio" id="heures_1" name="heures" value="1"> 1 Heure
-            </label><br>
-            <label for="heures_2">
-                <input type="radio" id="heures_2" name="heures" value="2"> 2 Heures
-            </label><br>
-            <label for="heures_3">
-                <input type="radio" id="heures_3" name="heures" value="3"> 3 Heures
-            </label><br>
-            <label for="heures_4">
-                <input type="radio" id="heures_4" name="heures" value="4"> 4 Heures
-            </label><br>
-            <label for="heures_5">
-                <input type="radio" id="heures_5" name="heures" value="5"> 5 Heures
-            </label><br>
-
-            <input type="submit" value="Envoi">
+            <br>
+    <br>
+            <button type="submit">Place Order</button>
         </form>
     </div>
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-       <!-- Start Footer -->
-    <footer class="bg-dark" id="tempaltemo_footer">
+     <!-- Start Footer -->
+     <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
             <div class="row">
 
@@ -364,4 +264,6 @@ input[type="submit"]:hover {
 
 </body>
 
+</html>
+</body>
 </html>
