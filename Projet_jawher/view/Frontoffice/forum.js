@@ -15,3 +15,20 @@ const form = document.querySelector('form');
             // Redirect to the verification.php page with the appended values
             window.location.href = redirectUrl;
         });
+        function saisie(i){
+            reply=document.getElementsByName("reply");
+            username=document.getElementsByName("username");
+            userid=document.getElementsByName("userid");
+            if(reply[i].value==""){
+                alert("donner un commentaire");
+                return false;
+            }
+            if(username[i].value==""){
+                alert("donner un username");
+                return false;
+            }
+            if(userid[i].value==""){
+                alert("donner un userid");
+                return false;
+            }
+        }

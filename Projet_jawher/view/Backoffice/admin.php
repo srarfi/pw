@@ -23,7 +23,7 @@ include_once '../../model/post.php';
     <div class="logo">
         <img src="aa.png.png" alt="Logo" height="96" width="126">
     </div>
-    <div class="links">
+    <div class="links"style="position:relative;top:120px;">
         <a href="#">admin gestion_client</a>
         <a href="#">admin gestion_commande</a>
         <a href="#">admin gestion_forum</a>
@@ -39,12 +39,14 @@ include_once '../../model/post.php';
 
         <!-- Display posts here -->
         <div id="posts">
-        <table border="2px">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." style="position:relative;bottom:10px;left:284px;">
+        <table border="2px" id="myTable" >
         <thead>
             <tr>
                 <th> User </th>
                 <th> Post </th>
                 <th> Replies </th>
+                
             </tr>
         </thead>
         <tbody>
@@ -59,6 +61,8 @@ include_once '../../model/post.php';
                     echo '<b>Reply</b>: '.$comment["mess"].'|';
                 }
                 echo '</td>';
+                echo '<td><button><a href="updatepost.php?id='.$post["id"].'&post='.$post["post"].'">Update<a/></button></td>';
+                echo '<td><button><a href="deletepost.php?id='.$post["id"].'">Delete</a></button></td>';
                 echo '</tr>';
             }
             ?>
@@ -89,6 +93,26 @@ include_once '../../model/post.php';
     function toggleSidebar() {
         var sidebar = document.getElementById('sidebar');
         sidebar.style.width = sidebar.style.width === '250px' ? '50px' : '250px';
+    }
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
 </script>
 

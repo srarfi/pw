@@ -167,6 +167,7 @@ include "../../controller/postC.php"
         // Display the posts
         $i=0;
         if (isset($posts) && is_array($posts)) {
+            $i=0;
             foreach ($posts as $post) {
                 echo '<div class="post">';
                 echo '<p><strong>User:</strong> ' . htmlspecialchars($post['user']) . '</p>';
@@ -190,7 +191,7 @@ include "../../controller/postC.php"
                     echo 'comment: '.$comment["mess"].'<input type="text" name="edit_reply" placeholder="Edit reply text"><button type="submit" class="edit-button">Edit</button><button class="delete-button"><a href="delete.php?id='.$comment["id_commentaire"].'" style="text-decoration: none;color: white;">Remove</a></button><br><hr>';
                 }
                 echo'</form>';
-                echo '<form action="" method="post" class="reply-form">';
+                echo '<form action="" method="post" class="reply-form" onsubmit="return saisie('.$i.')">';
                 echo '<input type="hidden" name="reply_post" value="' . $post['id'] . '">';
                 echo '<input type="submit" class="edit-button" value="Reply">';
                 echo 'Comment: <input type="text" name="reply">';
