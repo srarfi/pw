@@ -2,6 +2,7 @@
 include "../model/produit.php";
 include "../controller/produitC.php";
 
+
 $commandeController = new CommandeController();
 $productController = new ProductController();
 
@@ -44,21 +45,7 @@ if (isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['pro
         } catch (Exception $e) {
             echo 'Error deleting commande: ' . $e->getMessage();
         }}
-    if (isset($_POST['update_product'])) {
-        $updateProductId = $_POST['update_product_id'];
-        $updateProductName = $_POST['update_product_name'];
-        $updateProductDescription = $_POST['update_product_description'];
-        $updatePrice = $_POST['update_price'];
-        $updatePhoto = $_POST['update_photo'];
-    
-        // Perform product update
-        try {
-            $productController->updateProduct($updateProductId, $updateProductName, $updatePrice, $updateProductDescription, $updatePhoto);
-            echo 'Product updated successfully!';
-        } catch (Exception $e) {
-            echo 'Error updating product: ' . $e->getMessage();
-        }
-    }
+ 
     if (isset($_POST['update_commande'])) {
         $updateCommandeId = $_POST['update_commande_id'];
         $updateProductName = $_POST['update_product_name'];
@@ -201,6 +188,8 @@ if (isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['pro
                 echo "<tr>";
                 echo "<td>{$product['id_prod']}</td>"; // Update the key to 'id_prod'
                 echo "<td>{$product['nom']}</td>"; // Update the key to 'nom'
+                echo '<td><a href="../controller/deleteprod.php?delete=' . $product['id_prod'] . '">Delete</a></td>';
+                echo '<td><a href="update.php?update=' . $product['id_prod'] . '&name='.$product['nom'].'&descriptioon='.$product['description'].'&prix='.$product['prix_prod'].'">update</a></td>';
                 echo "</tr>";
             }
             ?>
@@ -226,37 +215,10 @@ if (isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['pro
                 <input type="submit" value="Add Product">
             </form>
         </div>
-        <div class="update-product">
-        <h1>Update Product</h1>
-        <form action="" method="post" onsubmit="return validateUpdateProductForm();">
-            <label for="update_product_id">Product ID to Update:</label>
-            <input type="text" id="update_product_id" name="update_product_id" ><br><br>
-
-            <label for="update_product_name">New Product Name:</label>
-            <input type="text" id="update_product_name" name="update_product_name" ><br><br>
-
-            <label for="update_product_description">New Product Description:</label>
-            <textarea id="update_product_description" name="update_product_description" rows="4" ></textarea><br><br>
-
-            <label for="update_price">New Price ($):</label>
-            <input type="number" id="update_price" name="update_price" step="0.01" ><br><br>
-
-            <label for="update_photo">New Product Image:</label>
-            <input type="file" id="update_photo" name="update_photo" accept="image/*"><br><br>
-
-            <input type="submit" name="update_product" value="Update Product">
-        </form>
-    </div>
+       
 
         
-        <div class="delete-product">
-            <h1>Delete Product</h1>
-            <form action="" method="post" onsubmit="return validateDeleteProductForm();">
-                <label for="delete_product_id">Product ID to Delete:</label>
-                <input type="text" id="delete_product_id" name="delete_product_id" ><br><br>
-                <input type="submit" value="Delete Product">
-            </form>
-        </div>
+        
 
         <div class="order-tracking">
             <h1>Order Tracking</h1>
@@ -274,6 +236,7 @@ if (isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['pro
                 echo "<li>User ID: " . ($commande['id_ut'] ?? 'N/A') . "</li>";
                 echo "<li>Product ID: " . $commande['id_prod'] . "</li>";
                 echo "<li>Product name: " . ($commande['nom'] ?? 'N/A') . "</li>";
+                echo '<td><a href="../controller/deletecom.php?delete=' . $commande['id_commande'] . '">Delete</a></td>';
                 echo "<hr>"; 
             }
             ?>
@@ -281,15 +244,9 @@ if (isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['pro
             </div>
         </div>
     </div>
-    <div class="delete-commande">
-    <h1>Delete Commande</h1>
-    <form action="" method="post" onsubmit="return validateDeleteCommandeForm();">
-        <label for="delete_commande_id">Commande ID to Delete:</label>
-        <input type="text" id="delete_commande_id" name="delete_commande_id" ><br><br>
-        <input type="submit" name="delete_commande" value="Delete Commande">
-    </form>
+
 </div>
-<div class="update-commande">
+<div class="update-commande">   
     <h1>Update Commande</h1>
     <form action="" method="post" onsubmit="return validateUpdateCommandeForm();">
         <label for="update_commande_id">Commande ID to Update:</label>

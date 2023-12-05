@@ -24,6 +24,7 @@ $bestAndLeastSellers = $salesController->getBestAndLeastSellers();
     <link rel="stylesheet" href="assets/css/templatemo.css">
     <link rel="stylesheet" href="assets/css/custom.css">
     
+    
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
@@ -202,6 +203,7 @@ antioxydants et soutien au metabolisme</p>
         </div>
 
         <section class="all-categories">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search ">
         <?php
 
 if ($productList) {
@@ -226,36 +228,73 @@ if ($productList) {
 
     
     echo "<section class='container my-5'>
-            <div class='row g-4'>";
-    
+    <div class='row g-4'>";
 
-            foreach ($productList as $product) {
-                echo "<div class='col'>
-                    <div class='card border-0 rounded-3 h-100'>
-                        <img src='images/{$product['photo']}' alt='{$product['nom']}' height='360' width='241'>
-                        <div class='card-body text-center'>
-                            <h5 class='card-title fw-semibold'>{$product['nom']}</h5>
-                            <p class='card-text mt-4'>{$product['description']}</p>
-                            <h5 class='price fw-semibold'>{$product['prix_prod']}</h5>
-                        </div>
-                        <div class='mb-4 mx-auto'>
-                            <form action='checkout.php' method='post'>
-                                <input type='hidden' name='product-id' value='{$product['id_prod']}'>
-                                <input type='hidden' name='product-name' value='{$product['nom']}'>
-                                <input type='hidden' name='product-price' value='{$product['prix_prod']}'> <!-- Add this line -->
-                                <button type='submit' class='btn-buy-now'>Buy Now <i class='fa-solid fa-arrow-right'></i></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>";
-            }
-            
+// Create an array to store the selected products
+$selectedProducts = array();
 
-    echo "</div></section>";
+foreach ($productList as $product) {
+echo "<div class='col'>
+<div class='card border-0 rounded-3 h-100'>
+    <img src='images/{$product['photo']}' alt='{$product['nom']}' height='360' width='241'>
+    <div class='card-body text-center'>
+        <h5 class='card-title fw-semibold'>{$product['nom']}</h5>
+        <p class='card-text mt-4'>{$product['description']}</p>
+        <h5 class='price fw-semibold'>{$product['prix_prod']}</h5>
+    </div>
+    <div class='mb-4 mx-auto'>
+        <form action='checkout.php' method='post'>
+            <input type='hidden' name='product-id' value='{$product['id_prod']}'>
+            <input type='hidden' name='product-name' value='{$product['nom']}'>
+            <input type='hidden' name='product-price' value='{$product['prix_prod']}'>
+            <input type='checkbox' name='selected-products[]' value='{$product['id_prod']}' class='product-checkbox'>
+            <button type='submit' class='btn-buy-now'>Buy Now <i class='fa-solid fa-arrow-right'></i></button>
+        </form>
+    </div>
+</div>
+</div>";
+
+// Add the selected product data to the array when the checkbox is checked
+if (isset($_POST['selected-products']) && in_array($product['id_prod'], $_POST['selected-products'])) {
+$selectedProducts= $product;
+}
+}
+
+echo "</div>
+</section>";
+
+if (!empty($selectedProducts)) {
+$selectedProductsQuery = http_build_query(array('selectedProducts' => $selectedProducts));
+$checkoutPageURL = "checkout.php?$selectedProductsQuery";
+}
 } else {
     echo "<p>No products found.</p>";
 }
 ?>
+<script>
+function myFunction() {
+    var input, filter, cards, card, productName, i, txtValue;
+    input = document.getElementById('myInput');
+    filter = input.value.toUpperCase();
+    cards = document.getElementsByClassName('col');
+
+    for (i = 0; i < cards.length; i++) {
+        card = cards[i];
+        productName = card.getElementsByTagName('h5')[0];
+
+        if (productName) {
+            txtValue = productName.textContent || productName.innerText;
+
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    }
+}
+</script>
+
 
 
 

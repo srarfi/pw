@@ -3,6 +3,8 @@
 include "../model/commande.php";
 include "../model/produit.php";
 include "../controller/produitC.php";
+require_once '../config.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     $commandeController = new CommandeController();
 
    
-    $commande = new Commande(null, null, $productId, $productName);
+    $commande = new Commande(null, null, $productId);
 
     $commandeController->addCommande($commande);
     $salesController = new SalesController();
@@ -132,6 +134,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     <br>
             <button type="submit">Place Order</button>
         </form>
+        <?php
+if (isset($_POST['selected-products'])) {
+    $selectedProductIds = $_POST['selected-products'];
+
+    // Example: Fetch and display the selected product details
+    foreach ($selectedProductIds as $productId) {
+        $product = getProductById($productId);
+        
+        if ($product) {
+            echo "Product ID: " . $product['id_prod'] . "<br>";
+            echo "Product Name: " . $product['nom'] . "<br>";
+            echo "Product Price: " . $product['prix_prod'] . "<br>";
+            echo "<br>";
+        }
+    }
+} else {
+    echo "No selected products.";
+}
+
+function getProductById($productId) {
+    $pdo = config::getConnexion(); // Retrieve the database connection
+
+    $sql = "SELECT * FROM produit WHERE id_prod = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$productId]);
+
+    // Process the query result
+    $product = $stmt->fetch();
+    if ($product) {
+        return $product;
+    } else {
+        return null;
+    }
+}
+?>
     </div>
      <!-- Start Footer -->
      <footer class="bg-dark" id="tempaltemo_footer">
