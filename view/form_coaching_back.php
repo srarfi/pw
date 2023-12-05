@@ -16,50 +16,15 @@
 <head>
 <title>MedNMore</title>
 <head>
-	<link rel="stylesheet" href="coachingcss.css">
 	<title>gym</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="common.css">
 	<script src="coachingscript.js"></script>
 <body>
-<div class="sidebar" id="sidebar" onmouseover="expandSidebar()" onmouseout="collapseSidebar()">
-    <div class="logo">
-        <img src="log.png" alt="Logo" height="96" width="126">
-    </div>
-    <div class="links">
-        <a href="#">admin gestion_client</a>
-        <a href="#">admin gestion_commande</a>
-        <a href="#">admin gestion_forum</a>
-        <a href="#">admin gestion_</a>
-        <a href="#">admin gestion_</a>
-    </div>
-</div>
 
-<div class="content">
-  
-</div>
-
-<footer class="footer">
-    <!-- Content for the footer goes here -->
-</footer>
-
-<script>
-    function expandSidebar() {
-        var sidebar = document.getElementById('sidebar');
-        sidebar.style.width = '250px';
-    }
-
-    function collapseSidebar() {
-        var sidebar = document.getElementById('sidebar');
-        sidebar.style.width = '130px'; // Adjust this width as needed
-    }
-
-    function toggleSidebar() {
-        var sidebar = document.getElementById('sidebar');
-        sidebar.style.width = sidebar.style.width === '250px' ? '50px' : '250px';
-    }
-</script>
     <div class="Contenu">
-  <h1>Formulaire de Coaching</h1>
+  <h1>Admin du Formulaire de Coaching (Ajout)</h1>
+  <a href="admin_coacing.php">Voir les demandes</a>
+
   
         <form action="" method="POST" onsubmit="return validateForm()">
 
@@ -115,6 +80,20 @@
         <label for="heures_5">
             <input type="checkbox" id="heures_5" name="heures" value="5"> 5 Heures
         </label><br>
+        <h2>Exercices Baskets  selectionee :</h2>
+        <label for="1">
+            <input type="checkbox" id="heures_1" name="heures" value="Augmentation de la verticalité"> Augmentation de la verticalité
+        </label><br>
+        <label for="2">
+            <input type="checkbox" id="heures_2" name="heures" value="Meilleure Dribble"> Meilleure Dribble
+        </label><br>
+        <label for="3">
+            <input type="checkbox" id="heures_3" name="heures" value="Tir"> Tir
+        </label><br>
+        <label for="4">
+            <input type="checkbox" id="heures_4" name="heures" value="Passe "> Passe
+        </label><br>
+        
 
         <input type="submit" value="Envoi">
     </form>
@@ -123,5 +102,3 @@
 </html>
 
 	
-</body>
-</html>

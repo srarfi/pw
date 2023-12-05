@@ -194,43 +194,29 @@ input[type="submit"]:hover {
             <label for="heures_5">
                 <input type="radio" id="heures_5" name="heures" value="5"> 5 Heures
             </label><br>
+    <!-- Section des exercices de basketball -->
+    <h2>Exercices de Basketball :(facultative)</h2>
+    <label for="increasing_vertical">
+        <input type="checkbox" id="increasing_vertical" name="basketball_exercise" value="increasing_vertical">
+        Augmentation de la verticalité
+    </label><br>
+    <label for="better_handling">
+        <input type="checkbox" id="better_handling" name="basketball_exercise" value="better_handling">
+        Meilleure Dribble
+    </label><br>
+    <label for="shooting">
+        <input type="checkbox" id="shooting" name="basketball_exercise" value="shooting">
+        Tir
+    </label><br>
+    <label for="passing">
+        <input type="checkbox" id="passing" name="basketball_exercise" value="passing">
+        Passe
+    </label><br>
 
-            <input type="submit" value="Envoi">
-        </form>
+    <input type="submit" value="Envoi">
     </div>
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
+</form>
+</div>
        <!-- Start Footer -->
     <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
