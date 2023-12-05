@@ -38,22 +38,12 @@
 }
 
 .content {
-    margin-left: 130px; /* Adjust this margin based on the collapsed width */
+    margin-left: 50px; /* Adjust this margin based on the collapsed width */
     padding: 20px;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
-
-.admin {
-    width: 50%;
-    margin: 20px auto; /* Adjust margin-top to match the padding of the .content */
-    padding: 20px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
-    margin-bottom: 20px;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
 .footer {
     height: 10px;
     background: linear-gradient(to bottom, rgb(26, 10, 75), rgb(26, 10, 75));
 }
+
+    

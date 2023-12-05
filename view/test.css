@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 30px;
+    color: #333;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    color: #ff0000;
+}
+
+.success-message {
+    color: #4caf50;
+}
+
+/*header*/
+
+    .top{
+        padding-bottom:100px;
+    }
+    body{
+        margin:0;
+        padding:0;   
+    }
+
+    ul{
+        
+        padding:55px;
+        margin: 0 150px 0 250px;
+        list-style:none;
+        
+        
+    }
+    li{
+        float:right;
+        margin:20px
+        
+    }
+    .logo img{
+        position:absolute;
+        margin-top:-15px;
+        margin-left:10px
+    }
+    nav a{
+        width:100px;
+        display:block;
+        padding:25px;
+        text-decoration:none;
+        font-family:Arial, Helvetica, sans-serif;
+        color:black;
+        text-align:middle;
+        
+    }
+    nav a:hover{
+    background:#355E3B	;
+    transition:0.5s;
+    text-transform:uppercase;
+    color:white;
+
+        
+    }
+/*footer*/
+
+    footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+    }
+    
+    .contact-info h3,
+    .social-media h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .contact-info p {
+        margin: 5px 0;
+    }
+    
+    .social-media ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .social-media ul li {
+        display: inline;
+        margin-right: 15px;
+    }
+    
+    .social-media ul li:last-child {
+        margin-right: 0;
+    }
+    
+    .social-media ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+    
+    .social-media ul li a:hover {
+        text-decoration: underline;
+    }

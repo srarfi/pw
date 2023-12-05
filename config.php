@@ -1,14 +1,25 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "projet_web";
-
-// Create a PDO connection
-try {
-    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
+class config
+{
+ private static $pdo = null;
+ public static function getConnexion()
+ {
+ if (!isset(self::$pdo)) {
+ try {
+ self::$pdo = new PDO(
+ 'mysql:host=localhost;dbname=projet_web',
+ 'root',
+ '',
+ [
+ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+ PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+ ]
+ );
+ //echo "connected successfully";
+ } catch (Exception $e) {
+ die('Erreur: ' . $e->getMessage());
+ }
+ }
+ return self::$pdo;
+ }
 }
-?>
