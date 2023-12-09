@@ -1,12 +1,13 @@
 <?php
+session_start();
  include "../control/utilisateurC.php";
  include "../model/utilisateur.php";
  $utilisateurc = new utilisateurc();
  if(isset($_POST['role_ut']) && isset($_POST['username']) && isset($_POST['nom_ut']) && isset($_POST['prenom_ut']) && isset($_POST['email_ut']) && isset($_POST['tel_ut']) && isset($_POST['cin_ut']) && isset($_POST['poid_ut']) && isset($_POST['taille_ut']) && isset($_POST['genre_ut']) && isset($_POST['age_ut']) && isset($_POST['addresse_ut']) && isset($_POST['login_ut']) && isset($_POST['mdp_ut'])){
     if(!empty($_POST['role_ut']) && !empty($_POST['username']) && !empty($_POST['nom_ut']) && !empty($_POST['prenom_ut']) && !empty($_POST['email_ut']) && !empty($_POST['tel_ut']) && !empty($_POST['cin_ut']) && !empty($_POST['poid_ut']) && !empty($_POST['taille_ut']) && !empty($_POST['genre_ut']) && !empty($_POST['age_ut']) && !empty($_POST['addresse_ut']) && !empty($_POST['login_ut']) && !empty($_POST['mdp_ut'])){
-        $utilisateur= new utilisateur(NULL, $_POST['role_ut'] , $_POST['username'] ,$_POST['nom_ut'], $_POST['prenom_ut'] , $_POST['email_ut'] , $_POST['tel_ut'] , $_POST['cin_ut'] , $_POST['poid_ut'] , $_POST['taille_ut'] , $_POST['genre_ut'] , $_POST['age_ut'] ,$_POST['addresse_ut'], $_POST['login_ut'] , $_POST['mdp_ut']) ;
+        $utilisateur= new utilisateur(NULL, $_POST['role_ut'] , $_POST['username'] ,$_POST['nom_ut'], $_POST['prenom_ut'] , $_POST['email_ut'] , $_POST['tel_ut'] , $_POST['cin_ut'] , $_POST['poid_ut'] , $_POST['taille_ut'] , $_POST['genre_ut'] , $_POST['age_ut'] ,$_POST['addresse_ut'],0, $_POST['login_ut'] , $_POST['mdp_ut']) ;
         $utilisateurc->addutilisateur($utilisateur);
-        //header("location:liste.php");   
+        header("location:home2.php");   
      }
 }
 ?>

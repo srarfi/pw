@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="./js.js"></script>
 </head>
 <body>
 <style>
@@ -92,7 +94,7 @@
     $c=new utilisateurc();
     $tab=$c->list_utilisateur();
     ?>
-    <center><h1>lsite des joueurs</h1></center>
+    <center><h1>lsite des Utilisateur</h1></center>
         <table border='2' align='center' width='60%' >
             <tr>
                 <td>id_utilisateur</td>
@@ -138,15 +140,6 @@
     
     ?>
      </table>
-     <button class="btn" onclick="openPopup()">Show Result</button>
-    <div id="popup" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePopup()">&times;</span>
-            <h2>Consultation Type Percentage</h2>
-            <div id="chart-container">
-            </div>
-        </div>
-    </div>
      
      </div>   
       

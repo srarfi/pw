@@ -1,4 +1,5 @@
 <?php
+session_start();    
     include "../control/utilisateurc.php";
     $c=new utilisateurc();
     $id=$_GET["idd"];

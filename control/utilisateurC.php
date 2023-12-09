@@ -27,7 +27,7 @@
         }
 
         public function addutilisateur($utilisateur){
-            $sql="INSERT INTO utilisateur VALUES (null,:r,:un,:n,:p,:e,:t,:c,:po,:ta,:g,:a,:ad,:l,:m)";
+            $sql="INSERT INTO utilisateur VALUES (null,:r,:un,:n,:p,:e,:t,:c,:po,:ta,:g,:a,:ad,0,:l,:m)";
             $db=config::getConnexion();
             try{
                 $query=$db->prepare($sql);
@@ -52,8 +52,21 @@
             }
         }
 
-        public function update_utilisateur($id,$username,$email,$tel,$add,$mdp){
-            $sql = "UPDATE utilisateur SET username='$username', email_ut='$email', tel_ut='$tel', addresse_ut='$add', mdp_ut='$mdp' WHERE id_ut=$id";
+        public function update_utilisateur($id, $username, $email, $tel, $add, $mdp) {
+            $sql = "UPDATE utilisateur SET username=?, email_ut=?, tel_ut=?, addresse_ut=?, mdp_ut=? WHERE id_ut=?";
+            $db = config::getConnexion();
+            $req = $db->prepare($sql);
+            
+            try {
+                $req->execute([$username, $email, $tel, $add, $mdp, $id]);
+            } catch (Exception $e) {
+                die("Error: " . $e->getMessage());
+            }
+        }
+        
+
+        public function verif_utilisateur($email){
+            $sql = "UPDATE utilisateur SET verified=1 WHERE email_ut='".$email."'";
             $db=config::getConnexion();
             $req=$db->prepare($sql);
             try{

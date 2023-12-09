@@ -13,6 +13,7 @@
         private  $genre_ut=null;
         private  $age_ut=null;
         private  $addresse_ut=null;
+        private  $verified=null;
         private  $login_ut=null;
         private  $mdp_ut=null;
        /* get id */ 
@@ -103,6 +104,13 @@
         public function getadresseut(){
             return $this->addresse_ut;
         }
+        /*get and set verified */
+        public function setverified($adu){
+            $this->addresse_ut=$adu;
+        }
+        public function getverified(){
+            return $this->addresse_ut;
+        }
         /*get and set login */
         public function setlogin($log){
             $this->login_ut=$log;
@@ -117,7 +125,7 @@
         public function getmdput(){
             return $this->mdp_ut;
         }
-        public function __construct($id=null,$ro,$un,$n,$p,$e,$t,$cin,$pd,$ta,$gen,$age,$adu,$log,$mdp){
+        public function __construct($id=null,$ro,$un,$n,$p,$e,$t,$cin,$pd,$ta,$gen,$age,$adu,$ve,$log,$mdp){
             $this->id_ut=$id;
             $this->role_ut=$ro;
             $this->username=$un;
@@ -131,6 +139,7 @@
             $this->genre_ut=$gen;
             $this->age_ut=$age;
             $this->addresse_ut=$adu;
+            $this->verified=$ve;
             $this->login_ut=$log;
             $this->mdp_ut=$mdp;
         }   
