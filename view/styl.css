@@ -1,0 +1,73 @@
+﻿body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Ajoutez ceci dans votre fichier styles.css */
+/* Ajoutez ceci dans votre fichier styles.css */
+/* Ajoutez ceci dans votre fichier styles.css */
+.table {
+    width: 100%;
+    margin-top: 20px; /* Ajustez ceci selon vos besoins */
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.footer {
+    background-color: #f8f9fa; /* Choisissez la couleur que vous souhaitez pour le fond du pied de page */
+    padding: 10px;
+}
+
+.sidebar {
+    height: 100vh;
+    background: linear-gradient(to bottom, rgb(26, 10, 75), rgb(26, 10, 75));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px; /* Ajustez la largeur de la barre latérale */
+    transition: width 0.3s; /* Ajoutez une transition pour des changements de largeur plus fluides */
+}
+
+.sidebar.collapsed {
+    width: 50px; /* Ajustez la largeur réduite */
+}
+
+.logo {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.links a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.content {
+    margin-left: 500; /* Ajustez cette marge à zéro pour éviter le chevauchement avec la barre latérale */
+    padding: 200px;
+    margin-top: -700px;
+}
+
+.content-with-sidebar {
+    margin-left: 250px; /* Ajustez cette marge en fonction de la largeur de la barre latérale */
+}
+
+.footer {
+    height: 10px;
+    background: linear-gradient(to bottom, rgb(26, 10, 75), rgb(26, 10, 75));
+}

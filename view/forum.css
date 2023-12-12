@@ -81,4 +81,24 @@
         .comment-inputs {
           margin-bottom: 10px;
         }
+        
       
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 10px;
+      }
+      
+      th, td {
+          padding: 10px;
+          text-align: left;
+      }
+      
+      th {
+          background-color: #3498db;
+          color: white;
+      }
+      
+      tbody tr:nth-child(even) {
+          background-color: #f2f2f2;
+      }

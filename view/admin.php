@@ -1,6 +1,7 @@
-﻿<?php
+<?php
 include "../model/produit.php";
-include "../controller/produitC.php";
+include "../control/produitC.php";
+
 
 $commandeController = new CommandeController();
 $productController = new ProductController();
@@ -35,30 +36,16 @@ if (isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['pro
         echo 'All fields are required!';
     }
 }
-if (isset($_POST['delete_commande_id'])) {
-    $deleteCommandeId = $_POST['delete_commande_id'];
+    if (isset($_POST['delete_commande_id'])) {
+        $deleteCommandeId = $_POST['delete_commande_id'];
 
-    try {
-        $commandeController->deleteCommande($deleteCommandeId);
-        echo 'Commande deleted successfully!';
-    } catch (Exception $e) {
-        echo 'Error deleting commande: ' . $e->getMessage();
-    }}
-    if (isset($_POST['update_product'])) {
-        $updateProductId = $_POST['update_product_id'];
-        $updateProductName = $_POST['update_product_name'];
-        $updateProductDescription = $_POST['update_product_description'];
-        $updatePrice = $_POST['update_price'];
-        $updatePhoto = $_POST['update_photo'];
-    
-        // Perform product update
         try {
-            $productController->updateProduct($updateProductId, $updateProductName, $updatePrice, $updateProductDescription, $updatePhoto);
-            echo 'Product updated successfully!';
+            $commandeController->deleteCommande($deleteCommandeId);
+            echo 'Commande deleted successfully!';
         } catch (Exception $e) {
-            echo 'Error updating product: ' . $e->getMessage();
-        }
-    }
+            echo 'Error deleting commande: ' . $e->getMessage();
+        }}
+ 
     if (isset($_POST['update_commande'])) {
         $updateCommandeId = $_POST['update_commande_id'];
         $updateProductName = $_POST['update_product_name'];
@@ -167,12 +154,27 @@ if (isset($_POST['delete_commande_id'])) {
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="styless.css">
     <title>Admin Page</title>
     <link rel="stylesheet" type="text/css" href="staile.css">
 </head>
 <body>
-    
-<table class="product-table">
+<div class="sidebar" id="sidebar" onmouseover="expandSidebar()" onmouseout="collapseSidebar()">
+    <div class="logo">
+        <img src="aa.png" alt="Logo" height="96" width="126">
+    </div>
+    <div class="links">
+        <a href="liste.php">admin gestion_client</a>
+        <a href="admin.php">admin gestion_commande</a>
+        <a href="admine.php">admin gestion_forum</a>
+        <a href="reclamations.php">admin gestion_reclamation</a>
+        <a href="update_delete_demandes.php">admin gestion_coaching</a>
+        <a href="ajoutadmine.php">ajout admin</a>
+    </div>
+</div> <div class="content">
+    <div style="margin-top: -52%;">
+    <table class="product-table" style="margin:70px">
         <thead>
             <tr>
                 <th>Product ID</th>
@@ -187,6 +189,8 @@ if (isset($_POST['delete_commande_id'])) {
                 echo "<tr>";
                 echo "<td>{$product['id_prod']}</td>"; // Update the key to 'id_prod'
                 echo "<td>{$product['nom']}</td>"; // Update the key to 'nom'
+                echo '<td><a href="../control/deleteprod.php?delete=' . $product['id_prod'] . '">Delete</a></td>';
+                echo '<td><a href="updatee.php?update=' . $product['id_prod'] . '&name='.$product['nom'].'&descriptioon='.$product['description'].'&prix='.$product['prix_prod'].'">update</a></td>';
                 echo "</tr>";
             }
             ?>
@@ -194,7 +198,7 @@ if (isset($_POST['delete_commande_id'])) {
     </table>
     
     <div class="admin-container">
-        <div class="add-product">
+        <div class="add-product"style="margin-left:70px" >
             <h1>Add a New Product</h1>
             <form action="" method="post" onsubmit="return validateAddProductForm();">
                 <label for="product_name">Product Name:</label>
@@ -212,39 +216,12 @@ if (isset($_POST['delete_commande_id'])) {
                 <input type="submit" value="Add Product">
             </form>
         </div>
-        <div class="update-product">
-        <h1>Update Product</h1>
-        <form action="" method="post "onsubmit="return validateUpdateProductForm();">
-            <label for="update_product_id">Product ID to Update:</label>
-            <input type="text" id="update_product_id" name="update_product_id" ><br><br>
-
-            <label for="update_product_name">New Product Name:</label>
-            <input type="text" id="update_product_name" name="update_product_name" ><br><br>
-
-            <label for="update_product_description">New Product Description:</label>
-            <textarea id="update_product_description" name="update_product_description" rows="4" ></textarea><br><br>
-
-            <label for="update_price">New Price ($):</label>
-            <input type="number" id="update_price" name="update_price" step="0.01" ><br><br>
-
-            <label for="update_photo">New Product Image:</label>
-            <input type="file" id="update_photo" name="update_photo" accept="image/*"><br><br>
-
-            <input type="submit" name="update_product" value="Update Product">
-        </form>
-    </div>
+       
 
         
-        <div class="delete-product">
-            <h1>Delete Product</h1>
-            <form action="" method="post" onsubmit="return validateDeleteProductForm();">
-                <label for="delete_product_id">Product ID to Delete:</label>
-                <input type="text" id="delete_product_id" name="delete_product_id" ><br><br>
-                <input type="submit" value="Delete Product">
-            </form>
-        </div>
+        
 
-        <div class="order-tracking">
+        <div class="order-tracking"style="margin-left:70px">
             <h1>Order Tracking</h1>
             <div class="order-tracking-content">
                 <ul id="order-list">
@@ -254,12 +231,13 @@ if (isset($_POST['delete_commande_id'])) {
 
         
             $commandes = $commandeController->listCommandes();
-
+          
             foreach ($commandes as $commande) {
                 echo "<li>Command ID: " . $commande['id_commande'] . "</li>";
-                echo "<li>User ID: " . $commande['id_ut'] . "</li>";
+                echo "<li>User ID: " . ($commande['id_ut'] ?? 'N/A') . "</li>";
                 echo "<li>Product ID: " . $commande['id_prod'] . "</li>";
-                echo "<li>Product name: " . $commande['product_nom'] . "</li>";
+                echo "<li>Product name: " . ($commande['nom'] ?? 'N/A') . "</li>";
+                echo '<td><a href="../control/deletecom.php?delete=' . $commande['id_commande'] . '">Delete</a></td>';
                 echo "<hr>"; 
             }
             ?>
@@ -267,15 +245,9 @@ if (isset($_POST['delete_commande_id'])) {
             </div>
         </div>
     </div>
-    <div class="delete-commande">
-    <h1>Delete Commande</h1>
-    <form action="" method="post" onsubmit="return validateDeleteCommandeForm();">
-        <label for="delete_commande_id">Commande ID to Delete:</label>
-        <input type="text" id="delete_commande_id" name="delete_commande_id" ><br><br>
-        <input type="submit" name="delete_commande" value="Delete Commande">
-    </form>
+
 </div>
-<div class="update-commande">
+<div class="update-commande" style="margin-left:70px">   
     <h1>Update Commande</h1>
     <form action="" method="post" onsubmit="return validateUpdateCommandeForm();">
         <label for="update_commande_id">Commande ID to Update:</label>
@@ -288,6 +260,31 @@ if (isset($_POST['delete_commande_id'])) {
     </form>
 </div>
 
+
+</div>
+</div>
+    
+
+<footer class="footer">
+    <!-- Content for the footer goes here -->
+</footer>
+
+<script>
+    function expandSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.width = '250px';
+    }
+
+    function collapseSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.width = '130px'; // Adjust this width as needed
+    }
+
+    function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.style.width = sidebar.style.width === '250px' ? '50px' : '250px';
+    }
+</script>
 
     
 </body>

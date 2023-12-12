@@ -1,7 +1,15 @@
+<?php
+session_start();
+$id=$_SESSION["id"];
+?>
 <?php 
 
 include "../model/commande.php";
-include "../controller/produitC.php";
+include "../model/produit.php";
+include "../control/produitC.php";
+require_once '../config.php';
+
+
 ?>
 
 <!DOCTYPE html>
@@ -19,9 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     $commandeController = new CommandeController();
 
    
-    $commande = new Commande(null, null, $productId, $productName);
+    $commande = new Commande(null, $id , $productId);
 
     $commandeController->addCommande($commande);
+    $salesController = new SalesController();
+    $salesController->updateSalesCount($productId);
 } else {
     // Redirect to the product page if no product information is provided
     header("Location: product.php");
@@ -52,13 +62,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     <!-- Slick -->
     <link rel="stylesheet" type="text/css" href="assets/css/slick.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
-<!--
-    
 
 
 
 
--->
+
+
 	<style type="text/css">
 	.auto-style1 {
 		color: #DCDDE1;
@@ -97,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
                 <div class="flex-fill">
                     <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
+                            <a class="nav-link" href="home2.php">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.html">About</a>
@@ -116,6 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     <!-- Close Header -->
     <div class="checkout-container">
         <h1>Checkout</h1>
+     
         <form method="POST">
 
             <label for="product-name">Product Name</label>
@@ -130,6 +140,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product-id']) && isset
     <br>
             <button type="submit">Place Order</button>
         </form>
+        <?php
+
+
+
+
+// Clear the session after displaying the products (optional)
+
+
+?>
     </div>
      <!-- Start Footer -->
      <footer class="bg-dark" id="tempaltemo_footer">

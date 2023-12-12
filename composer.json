@@ -1,0 +1,14 @@
+{
+    "name": "ridha/srarfi",
+    "description": "hnayen",
+    "authors": [
+        {
+            "name": "ridha"
+        }
+    ],
+    
+        "require": {
+            "phpmailer/phpmailer": "^6.9",
+        "twilio/sdk": "^7.12"
+        }
+}

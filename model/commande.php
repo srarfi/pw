@@ -5,7 +5,6 @@ class Commande
     private $id_ut;
     private $id_prod;
 
-    private $product_nom;
     public function getIdCommande()
     {
         return $this->id_commande;
@@ -24,20 +23,17 @@ class Commande
     {
         return $this->id_prod;
     }
-    public function getProductNom()
-    {
-        return $this->product_nom;
-    }
+  
 
 
 
  
-    public function __construct($idCommande, $idUt, $idProd, $productNom)
+    public function __construct($idCommande, $idUt, $idProd, )
     {
         $this->id_commande = $idCommande;
         $this->id_ut = $idUt;
         $this->id_prod = $idProd;
-        $this->product_nom = $productNom;
+        
     }
 }
 ?>

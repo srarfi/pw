@@ -6,9 +6,9 @@ class reponse
     private ?string $date = null;
     private ?string $objet = null;
     private ?string $description = null;
-    private ?string $idreclamation = null;
+    private ?int $idreclamation = null;
 
-    public function __construct($id = null, $date, $obj, $desc , $idreclamation)
+    public function __construct($id = null, $date, $obj, $desc, $idreclamation)
     {
         $this->idreponse = $id;
         $this->date = $date;
@@ -65,8 +65,4 @@ class reponse
         $this->idreclamation = $idreclam;
         return $this;
     }
-    
-
-    
 }
-?>

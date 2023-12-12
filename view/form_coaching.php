@@ -1,14 +1,33 @@
-﻿
+﻿<?php
+include "../control/coachingc.php";
+include "../model/coaching.php";
+session_start();
+$id=$_SESSION["id"];
+$coachingc = new coachingc();
+
+if (isset($_POST['objectif']) && isset($_POST['jours']) && isset($_POST['heures']) && isset($_POST['basket'])) {
+    if (!empty($_POST['objectif']) && !empty($_POST['jours']) && !empty($_POST['heures']) && !empty($_POST['basket'])) {
+        $coaching = new coaching(null,$id, $_POST['objectif'], $_POST['jours'], $_POST['heures'], $_POST['basket']);
+        $coachingc->plans($coaching);
+
+        // Redirect to the confirmation HTML page
+        header("location: submit_coaching_form.php");
+        exit(); // Make sure to stop the script after redirecting
+    }
+}
+?>
+
+
 <html lang="en">
 
 <head>
-    <title>Zay Shop - Product Detail Page</title>
+<title>gymbros</title>   
+    <link rel="icon" href="logo.png" type="image/x-icon">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/templatemo.css">
     <link rel="stylesheet" href="assets/css/custom.css">
@@ -36,56 +55,8 @@
 	.auto-style2 {
 		color: #DCDDE1;
 	}
-	</style>
-</head>
 
-<body>
-    <!-- Start Top Nav -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
-        <div class="container text-light">
-            <div class="w-100 d-flex justify-content-between">
-            </div>
-        </div>
-    </nav>
-    <!-- Close Top Nav -->
-
-
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-light shadow">
-        <div class="container d-flex justify-content-between align-items-center">
-
-            <a class="log.png" href="index.html">
-            <img src="log.png" alt="GymBros" height="77" width="118">
-            </a>
-
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            </button>
-
-            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
-                <div class="flex-fill">
-                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="shop.html">Shop</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-                
-        </div>
-    </nav>
-    <!-- Close Header -->
-    
-    <script src="coachingscript.js"></script>
-    <style>
-        .Contenu {
+    .Contenu {
     width: 50%;
     margin: auto;
     padding: 20px;
@@ -128,117 +99,146 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-/* Optional: Add responsive styles for smaller screens */
-@media (max-width: 768px) {
-    .Contenu {
-        width: 80%;
-    }
-}
+	</style>
+</head>
 
-    </style>
 <body>
-    <div class="Contenu">
-        <h1>Formulaire de Coaching</h1>
-        <form id="" action="submit_coaching_form.html" onsubmit="return validateForm()">
-        <h2>ID:</h2>
-            <label for="id">
-                <input type="input" id="id" name="id" value=""> 
-            </label><br>
-            <h2>Choisissez l'Objectif :</h2>
-            <label for="perte_poids">
-                <input type="checkbox" id="perte_poids" name="objectif" value="perte_poids"> Perte de Poids
-            </label><br>
-            <label for="prise_muscle">
-                <input type="checkbox" id="prise_muscle" name="objectif" value="prise_muscle"> Prise de Muscle
-            </label><br>
-            <label for="forme_generale">
-                <input type="checkbox" id="forme_generale" name="objectif" value="forme_generale"> Forme Générale
-            </label><br>
-            <label for="endurance">
-                <input type="checkbox" id="endurance" name="objectif" value="endurance"> Endurance
-            </label><br>
-            <label for="flexibilite">
-                <input type="checkbox" id="flexibilite" name="objectif" value="flexibilite"> Flexibilité
-            </label><br>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
 
-            <h2>Nombre de Jours Disponibles :</h2>
-            <label for="jours_1">
-                <input type="radio" id="jours_1" name="jours" value="1"> 1 Jour
-            </label><br>
-            <label for="jours_2">
-                <input type="radio" id="jours_2" name="jours" value="2"> 2 Jours
-            </label><br>
-            <label for="jours_3">
-                <input type="radio" id="jours_3" name="jours" value="3"> 3 Jours
-            </label><br>
-            <label for="jours_4">
-                <input type="radio" id="jours_4" name="jours" value="4"> 4 Jours
-            </label><br>
-            <label for="jours_5">
-                <input type="radio" id="jours_5" name="jours" value="5"> 5 Jours
-            </label><br>
 
-            <h2>Heures par Jour :</h2>
-            <label for="heures_1">
-                <input type="radio" id="heures_1" name="heures" value="1"> 1 Heure
-            </label><br>
-            <label for="heures_2">
-                <input type="radio" id="heures_2" name="heures" value="2"> 2 Heures
-            </label><br>
-            <label for="heures_3">
-                <input type="radio" id="heures_3" name="heures" value="3"> 3 Heures
-            </label><br>
-            <label for="heures_4">
-                <input type="radio" id="heures_4" name="heures" value="4"> 4 Heures
-            </label><br>
-            <label for="heures_5">
-                <input type="radio" id="heures_5" name="heures" value="5"> 5 Heures
-            </label><br>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
 
-            <input type="submit" value="Envoi">
-        </form>
-    </div>
+            <a class="log.png" href="home2.php">
+            <img src="log.png" alt="GymBros" height="77" width="118">
+            </a>
 
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="home2.php">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="product.php">product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addReclamation.php">Reclamation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="forum2.php">forum</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="form_coaching.php">coaching</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="verified.php">verifier</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">quitter</a>
+                        </li>
+                    </ul>
+                    
+                </div>
+    </nav>
+    <!-- Close Header -->
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <script src="coachingscript.js"></script>
     
 
-       <!-- Start Footer -->
-    <footer class="bg-dark" id="tempaltemo_footer">
+<div class="Contenu">
+  <h1> Formulaire de Coaching (Ajout)</h1> 
+        <form action="" method="POST" onsubmit="return validateForm()">
+
+        <h2>Choisissez l'Objectif :</h2>
+        <label for="perte_poids">
+            <input type="checkbox" id="perte_poids" name="objectif" value="perte_poids"> Perte de Poids
+        </label><br>
+        <label for="prise_muscle">
+            <input type="checkbox" id="prise_muscle" name="objectif" value="prise_muscle"> Prise de Muscle
+        </label><br>
+        <label for="forme_generale">
+            <input type="checkbox" id="forme_generale" name="objectif" value="forme_generale"> Forme Générale
+        </label><br>
+        <label for="endurance">
+            <input type="checkbox" id="endurance" name="objectif" value="endurance"> Endurance
+        </label><br>
+        <label for="flexibilite">
+            <input type="checkbox" id="flexibilite" name="objectif" value="flexibilite"> Flexibilité
+        </label><br>
+        <h2>Nombre de Jours Disponibles :</h2>
+        <label for="jours_1">
+            <input type="radio" id="jours_1" name="jours" value="1"> 1 Jour
+        </label><br>
+        <label for="jours_2">
+            <input type="radio" id="jours_2" name="jours" value="2"> 2 Jours
+        </label><br>
+        <label for="jours_3">
+            <input type="radio" id="jours_3" name="jours" value="3"> 3 Jours
+        </label><br>
+        <label for="jours_4">
+            <input type="radio" id="jours_4" name="jours" value="4"> 4 Jours
+        </label><br>
+        <label for="jours_5">
+            <input type="radio" id="jours_5" name="jours" value="5"> 5 Jours
+        </label><br>
+        <h2>Heures par Jour :</h2>
+        <label for="heures_1">
+            <input type="radio" id="heures_1" name="heures" value="1"> 1 Heure
+        </label><br>
+        <label for="heures_2">
+            <input type="radio" id="heures_2" name="heures" value="2"> 2 Heures
+        </label><br>
+        <label for="heures_3">
+            <input type="radio" id="heures_3" name="heures" value="3"> 3 Heures
+        </label><br>
+        <label for="heures_4">
+            <input type="radio" id="heures_4" name="heures" value="4"> 4 Heures
+        </label><br>
+        <label for="heures_5">
+            <input type="radio" id="heures_5" name="heures" value="5"> 5 Heures
+        </label><br>
+        <h2>Exercices Baskets  selectionee :</h2>
+        <label for="ex">
+            <input type="checkbox" id="ex" name="basket" value="non"> Pas interesse
+        </label><br>
+        <label for="ex1">
+            <input type="checkbox" id="ex1" name="basket" value="verticalité"> Augmentation de la verticalité
+        </label><br>
+        <label for="ex2">
+            <input type="checkbox" id="ex2" name="basket" value="Dribble"> Meilleure Dribble
+        </label><br>
+        <label for="ex3">
+            <input type="checkbox" id="ex3" name="basket" value="Tir"> Tir
+        </label><br>
+        <label for="ex4">
+            <input type="checkbox" id="ex4" name="basket" value="Passe "> Passe
+        </label><br>
+        <input type="submit" value="Envoi">
+    </form>
+</div>
+      
+
+
+
+   <!-- Start Footer -->
+   <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
             <div class="row">
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">
-					<span lang="en-gb">GymBros</span></h2>
+                    
                     <ul class="list-unstyled text-light footer-link-list">
                         <li>
                             <i class="fas fa-map-marker-alt fa-fw"></i>
@@ -262,11 +262,11 @@ input[type="submit"]:hover {
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Home</a></li>
-                        <li><a class="text-decoration-none" href="#">About Us</a></li>
-                        <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
-                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                        <li><a class="text-decoration-none" href="home2.php">Home</a></li>
+                        <li><a class="text-decoration-none" href="product.php">shop</a></li>
+                        <li><a class="text-decoration-none" href="forum2.php">forum</a></li>
+                        <li><a class="text-decoration-none" href="addReclamation.php">reclamation</a></li>
+                        <li><a class="text-decoration-none" href="form_coaching.php">coaching</a></li>
                     </ul>
                 </div>
 
@@ -291,13 +291,6 @@ input[type="submit"]:hover {
                             <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
                         </li>
                     </ul>
-                </div>
-                <div class="col-auto">
-                    <label class="sr-only" for="subscribeEmail">Email address</label>
-                    <div class="input-group mb-2">
-                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
-                        <div class="input-group-text btn-success text-light">Subscribe</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -328,39 +321,16 @@ input[type="submit"]:hover {
     <!-- End Script -->
 
     <!-- Start Slider Script -->
-    <script src="assets/js/slick.min.js"></script>
-    <script>
-        $('#carousel-related-product').slick({
-            infinite: true,
-            arrows: false,
-            slidesToShow: 4,
-            slidesToScroll: 3,
-            dots: true,
-            responsive: [{
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3
-                    }
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 3
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 3
-                    }
-                }
-            ]
-        });
-    </script>
-    <!-- End Slider Script -->
+   
+</body>
+
+</html>
+    
+
+
+
+
+
 
 </body>
 

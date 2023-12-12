@@ -5,6 +5,7 @@
         private  $objectif=null; 
         private  $nb_h=null;
         private  $nb_j=null;
+        private  $basket=null;
         
        /* get id */ 
         public function getidrepco(){
@@ -38,13 +39,21 @@
         public function getnbj(){
             return $this->nb_j;
         }
-        
-        public function __construct($idd_rep_coaching=null,$idd_ut,$objectiff,$nb_hh,$nb_jj){
+        /*get and set basket */
+        public function setbasket($basket){
+            $this->basket=$basket;
+        }
+        public function getbasket(){
+            return $this->basket;
+        }                
+        public function __construct($idd_rep_coaching=null,$idd_ut,$objectiff,$nb_hh,$nb_jj,$baskett){
             $this->id_coaching=$idd_rep_coaching;
             $this->id_ut=$idd_ut;
             $this->objectif=$objectiff;
             $this->nb_h=$nb_hh;
             $this->nb_j=$nb_jj;
+            $this->basket=$baskett;
+            
         }   
      }
 

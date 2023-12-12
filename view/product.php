@@ -1,9 +1,12 @@
 
 <?php
+
 include "../model/produit.php";
-include "../controller/produitC.php"; 
+include "../control/produitC.php"; 
 $c = new ProductController();
 $productList = $c->listProducts(); 
+$salesController = new SalesController();
+$bestAndLeastSellers = $salesController->getBestAndLeastSellers();
 
 
 ?>
@@ -11,7 +14,8 @@ $productList = $c->listProducts();
 <html lang="en">
 
 <head>
-    <title>Zay Shop - Product Detail Page</title>
+<title>gymbros</title>   
+    <link rel="icon" href="logo.png" type="image/x-icon">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,6 +25,7 @@ $productList = $c->listProducts();
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/templatemo.css">
     <link rel="stylesheet" href="assets/css/custom.css">
+    
     
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
@@ -76,18 +81,27 @@ $productList = $c->listProducts();
 
             <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
                 <div class="flex-fill">
-                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
+                            <a class="nav-link" href="home2.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
+                            <a class="nav-link" href="product.php">product</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="shop.html">Shop</a>
+                            <a class="nav-link" href="addReclamation.php">Reclamation</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
+                            <a class="nav-link" href="forum2.php">forum</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="form_coaching.php">coaching</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="verified.php">verifier</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">quitter</a>
                         </li>
                     </ul>
                 </div>
@@ -200,50 +214,106 @@ antioxydants et soutien au metabolisme</p>
         </div>
 
         <section class="all-categories">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search ">
         <?php
 
 if ($productList) {
-    echo "<section class='container my-5'>
-            <div class='row g-4'>";
+    echo '<table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Product Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Best Seller</td>
+                <td>' . $bestAndLeastSellers['best_seller']['nom'] . '</td>
+            </tr>
+            <tr>
+                <td>Least Seller</td>
+                <td>' . $bestAndLeastSellers['least_seller']['nom'] . '</td>
+            </tr>
+        </tbody>
+    </table>';
+
     
+    echo "<section class='container my-5'>
+    <div class='row g-4'>";
 
-            foreach ($productList as $product) {
-                echo "<div class='col'>
-                    <div class='card border-0 rounded-3 h-100'>
-                        <img src='images/{$product['photo']}' alt='{$product['nom']}' height='360' width='241'>
-                        <div class='card-body text-center'>
-                            <h5 class='card-title fw-semibold'>{$product['nom']}</h5>
-                            <p class='card-text mt-4'>{$product['description']}</p>
-                            <h5 class='price fw-semibold'>{$product['prix_prod']}</h5>
-                        </div>
-                        <div class='mb-4 mx-auto'>
-                            <form action='checkout.php' method='post'>
-                                <input type='hidden' name='product-id' value='{$product['id_prod']}'>
-                                <input type='hidden' name='product-name' value='{$product['nom']}'>
-                                <input type='hidden' name='product-price' value='{$product['prix_prod']}'> <!-- Add this line -->
-                                <button type='submit' class='btn-buy-now'>Buy Now <i class='fa-solid fa-arrow-right'></i></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>";
-            }
-            
+   
 
-    echo "</div></section>";
+    foreach ($productList as $product) {
+        $addresse_pic=$product['photo'];
+        $pic="images/".$addresse_pic;
+        echo "<div class='col'>
+        <div class='card border-0 rounded-3 h-100'>
+            <img src='$pic' alt='{$product['nom']}' height='360' width='241'>
+            <div class='card-body text-center'>
+                <h5 class='card-title fw-semibold'>{$product['nom']}</h5>
+                <p class='card-text mt-4'>{$product['description']}</p>
+                <h5 class='price fw-semibold'>{$product['prix_prod']}</h5>
+            </div>
+            <div class='mb-4 mx-auto'>
+                <form action='checkout.php' method='post'>
+                    <input type='hidden' name='product-id' value='{$product['id_prod']}'>
+                    <input type='hidden' name='product-name' value='{$product['nom']}'>
+                    <input type='hidden' name='product-price' value='{$product['prix_prod']}'>
+                    <input type='checkbox' name='selected-products[]' value='{$product['id_prod']}' class='product-checkbox'>
+                    <button type='submit' class='btn-buy-now'>Buy Now <i class='fa-solid fa-arrow-right'></i></button>
+                </form>
+            </div>
+        </div>
+        </div>";
+    
+        // Store the product details in the session if it's selected
+    }
+
+echo "</div>
+</section>";
+
+if (!empty($selectedProducts)) {
+$selectedProductsQuery = http_build_query(array('selectedProducts' => $selectedProducts));
+$checkoutPageURL = "checkout.php?$selectedProductsQuery";
+}
 } else {
     echo "<p>No products found.</p>";
 }
 ?>
+<script>
+function myFunction() {
+    var input, filter, cards, card, productName, i, txtValue;
+    input = document.getElementById('myInput');
+    filter = input.value.toUpperCase();
+    cards = document.getElementsByClassName('col');
+
+    for (i = 0; i < cards.length; i++) {
+        card = cards[i];
+        productName = card.getElementsByTagName('h5')[0];
+
+        if (productName) {
+            txtValue = productName.textContent || productName.innerText;
+
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    }
+}
+</script>
 
 
 
-                <footer class="bg-dark" id="tempaltemo_footer">
+
+               <!-- Start Footer -->
+     <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
             <div class="row">
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">
-					<span lang="en-gb">GymBros</span></h2>
+                    
                     <ul class="list-unstyled text-light footer-link-list">
                         <li>
                             <i class="fas fa-map-marker-alt fa-fw"></i>
@@ -267,13 +337,14 @@ if ($productList) {
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Home</a></li>
-                        <li><a class="text-decoration-none" href="#">About Us</a></li>
-                        <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
-                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                        <li><a class="text-decoration-none" href="home2.php">Home</a></li>
+                        <li><a class="text-decoration-none" href="product.php">shop</a></li>
+                        <li><a class="text-decoration-none" href="forum2.php">forum</a></li>
+                        <li><a class="text-decoration-none" href="addReclamation.php">reclamation</a></li>
+                        <li><a class="text-decoration-none" href="form_coaching.php">coaching</a></li>
                     </ul>
                 </div>
+
 
             </div>
 
@@ -297,17 +368,10 @@ if ($productList) {
                         </li>
                     </ul>
                 </div>
-                <div class="col-auto">
-                    <label class="sr-only" for="subscribeEmail">Email address</label>
-                    <div class="input-group mb-2">
-                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
-                        <div class="input-group-text btn-success text-light">Subscribe</div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div class="w-100 bg-black py-3">
+        <div class="w-100  py-3">
             <div class="container">
                 <div class="row pt-2">
                     <div class="col-12">
@@ -332,16 +396,18 @@ if ($productList) {
     <script src="assets/js/custom.js"></script>
     <!-- End Script -->
 
+    <!-- Start Slider Script -->
    
+</body>
+
+</html>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-    crossorigin="anonymous"></script>
+
+
+
+
+
 
 </body>
+
 </html>
-
-
-
-
-
